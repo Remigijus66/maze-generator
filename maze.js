@@ -2,7 +2,8 @@ import Cell from "./cell.js";
 import { sleep } from "./utils.js";
 // import { DIR, PATH_STR, readPathStr } from "./path.js";
 
-export default class Maze {
+let maze
+class Maze {
   constructor({
     row_count = 5,
     col_count = 5,
@@ -54,8 +55,8 @@ export default class Maze {
 
     });
 
-       document.addEventListener('touchend', (e) => {
-        if (!xDown || !yDown) {
+    document.addEventListener('touchend', (e) => {
+      if (!xDown || !yDown) {
         return;
       }
       const xUp = e.changedTouches[0].pageX
@@ -65,23 +66,23 @@ export default class Maze {
 
       if (Math.abs(xDiff) > Math.abs(yDiff)) {
         if (xDiff > 0) {
-                  // console.log('left')
+          // console.log('left')
           this.moveleft()
         } else {
-                // console.log('right')
+          // console.log('right')
           this.moveright()
         }
       } else {
         if (yDiff > 0) {
-                  // console.log('up')
+          // console.log('up')
           this.moveup()
         } else {
-                  //  console.log('down')
+          //  console.log('down')
           this.movedown()
         }
       }
       xDown = null;
-      yDown = null;  
+      yDown = null;
     });
 
 
@@ -284,3 +285,57 @@ export default class Maze {
     this.finishCell.draw("yellow");
   }
 }
+
+
+const resetMaze = () => {
+  maze = new Maze({
+    row_count: 10,
+    col_count: 10,
+    cell_size: 20,
+    // startCell: { row: ~~random(0, 5), col: ~~random(0, 5) },
+    // finishCell: { row: ~~random(15, 20), col: ~~random(15, 20) },
+  });
+  // maze.makePath(readPathStr(PATH_STR.C));
+  // maze.makePathFromText("ab", 1);
+  maze.generateMaze_DFS({
+    sleepTime: 1,
+  });
+}
+
+
+class MazeWidget {
+  constructor() {
+    this.startMaze();
+    this.testVisibility();
+  }
+  startMaze = () => {
+    window.setup = () => {
+      createCanvas(200, 200);
+      resetMaze();
+    };
+
+    window.draw = () => {
+      background(50);
+      maze.draw();
+    };
+
+    window.keyPressed = () => {
+      if (keyCode == 13) {
+        resetMaze();
+      }
+    };
+  }
+  testVisibility = () => {
+    const btn = document.createElement("button");
+    btn.innerHTML = "this indicates that widgit should be visible";
+    document.body.appendChild(btn);
+  }
+}
+
+export default () => {
+  new MazeWidget()
+}
+
+new MazeWidget()
+
+
