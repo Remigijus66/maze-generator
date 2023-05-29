@@ -45,6 +45,60 @@ export default class Maze {
       if (key === "ArrowDown" || key === "s") this.movedown()
     });
 
+    let xDown = null;
+    let yDown = null;
+
+    document.addEventListener('touchstart', (e) => {
+      xDown = e.touches[0].clientX
+      yDown = e.touches[0].clientY
+
+    });
+
+       document.addEventListener('touchend', (e) => {
+        if (!xDown || !yDown) {
+        return;
+      }
+      const xUp = e.changedTouches[0].pageX
+      const yUp = e.changedTouches[0].pageY
+      const xDiff = xDown - xUp;
+      const yDiff = yDown - yUp;
+
+      if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        if (xDiff > 0) {
+                  // console.log('left')
+          this.moveleft()
+        } else {
+                // console.log('right')
+          this.moveright()
+        }
+      } else {
+        if (yDiff > 0) {
+                  // console.log('up')
+          this.moveup()
+        } else {
+                  //  console.log('down')
+          this.movedown()
+        }
+      }
+      xDown = null;
+      yDown = null;  
+    });
+
+
+
+
+    canvas.addEventListener('click', (e) => {
+      const elementRelativeX = e.offsetX;
+      const elementRelativeY = e.offsetY;
+      const canvasRelativeX = elementRelativeX * canvas.width / canvas.clientWidth;
+      const canvasRelativeY = elementRelativeY * canvas.height / canvas.clientHeight;
+      if (Math.floor((canvasRelativeY / cell_size) / 2) === this.cursorRow && Math.floor((canvasRelativeX / cell_size) / 2) - 1 === this.cursorColumn) this.moveright()
+      if (Math.floor((canvasRelativeY / cell_size) / 2) === this.cursorRow && Math.floor((canvasRelativeX / cell_size) / 2) + 1 === this.cursorColumn) this.moveleft()
+      if (Math.floor((canvasRelativeY / cell_size) / 2) + 1 === this.cursorRow && Math.floor((canvasRelativeX / cell_size) / 2) === this.cursorColumn) this.moveup()
+      if (Math.floor((canvasRelativeY / cell_size) / 2) - 1 === this.cursorRow && Math.floor((canvasRelativeX / cell_size) / 2) === this.cursorColumn) this.movedown()
+    });
+
+
     this.moveup = () => {
       if (this.cursorRow === this.startCell.row && this.cursorColumn === this.startCell.col) return
       if (this.grid[this.index(this.cursorRow, this.cursorColumn)].walls.top === true) return
@@ -127,7 +181,6 @@ export default class Maze {
   cleanArea(rFrom, rTo, cFrom, cTo) {
     for (let i = rFrom; i <= rTo; i++) {
       for (let j = cFrom; j <= cTo; j++) {
-        // console.log(this.grid[j + i * this.col_count])
         this.grid[j + i * this.col_count].walls.bottom = false
         this.grid[j + i * this.col_count].walls.right = false
         this.grid[j + i * this.col_count].walls.left = false
@@ -135,7 +188,6 @@ export default class Maze {
       }
     }
   }
-
 
   createGrid(row_count, col_count, cell_size) {
     let grid = [];
@@ -177,37 +229,6 @@ export default class Maze {
       if (sleepTime) await sleep(sleepTime);
     }
   }
-  // async makePath(path, sleepTime) {
-  //   let currentCell = this.grid[this.index(9, 1)];
-  //   for (let dir of path) {
-  //     let nextCell;
-  //     let neighbors = this.getNeighbors(currentCell);
-  //     if (dir == DIR.UP) {
-  //       nextCell = neighbors.top;
-  //     } else if (dir == DIR.DOWN) {
-  //       nextCell = neighbors.bottom;
-  //     } else if (dir == DIR.LEFT) {
-  //       nextCell = neighbors.left;
-  //     } else if (dir == DIR.RIGHT) {
-  //       nextCell = neighbors.right;
-  //     }
-  //     this.removeWalls(currentCell, nextCell);
-  //     currentCell.visited = true;
-  //     currentCell.isDone = true;
-  //     currentCell = nextCell;
-  //     if (sleepTime) await sleep(sleepTime);
-  //   }
-  // }
-
-  // async makePathFromText(text, sleepTime) {
-  //   let fullPath = [];
-  //   for (let c of text.toUpperCase()) {
-  //     fullPath.push(...readPathStr(PATH_STR[c]));
-  //     fullPath.push(...readPathStr(PATH_STR[" "]));
-  //   }
-
-  //   this.makePath(fullPath, sleepTime);
-  // }
 
   removeWalls(cellA, cellB) {
     let dx = cellA.col - cellB.col;

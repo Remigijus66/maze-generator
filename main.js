@@ -1,5 +1,5 @@
 import Maze from "./maze.js";
-import { PATH_STR, readPathStr } from "./path.js";
+// import { PATH_STR, readPathStr } from "./path.js";
 
 let maze;
 
