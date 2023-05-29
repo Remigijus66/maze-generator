@@ -306,7 +306,7 @@ const resetMaze = () => {
 class MazeWidget {
   constructor() {
     this.startMaze();
-    this.testVisibility();
+ 
   }
   startMaze = () => {
     window.setup = () => {
@@ -325,16 +325,12 @@ class MazeWidget {
       }
     };
   }
-  testVisibility = () => {
-    const btn = document.createElement("button");
-    btn.innerHTML = "this indicates that widgit should be visible";
-    document.body.appendChild(btn);
-  }
+
 }
 
-export default () => {
-  new MazeWidget()
-}
+// export default () => {
+//   new MazeWidget()
+// }
 
 new MazeWidget()
 
