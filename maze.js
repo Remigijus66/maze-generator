@@ -5,6 +5,8 @@ import { sleep } from "./utils.js";
 let maze
 class Maze {
   constructor({
+
+
     row_count = 5,
     col_count = 5,
     cell_size = 30,
@@ -15,6 +17,7 @@ class Maze {
     cursorRow = 2,
     cursorColumn = 2,
   }) {
+    
     this.row_count = row_count;
     this.col_count = col_count;
     this.cell_size = cell_size;
@@ -143,6 +146,7 @@ class Maze {
     }
 
   }
+
 
   setStartPosition() {
     this.grid[this.index(this.cursorRow, this.cursorColumn)].cursor = true
