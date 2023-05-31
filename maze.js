@@ -6,7 +6,6 @@ let maze
 class Maze {
   constructor({
 
-
     row_count = 5,
     col_count = 5,
     cell_size = 30,
@@ -17,7 +16,8 @@ class Maze {
     cursorRow = 2,
     cursorColumn = 2,
   }) {
-    
+
+    // this.startMaze();
     this.row_count = row_count;
     this.col_count = col_count;
     this.cell_size = cell_size;
@@ -62,6 +62,9 @@ class Maze {
       if (!xDown || !yDown) {
         return;
       }
+
+      
+
       const xUp = e.changedTouches[0].pageX
       const yUp = e.changedTouches[0].pageY
       const xDiff = xDown - xUp;
@@ -291,51 +294,5 @@ class Maze {
 }
 
 
-const resetMaze = () => {
-  maze = new Maze({
-    row_count: 10,
-    col_count: 10,
-    cell_size: 20,
-    // startCell: { row: ~~random(0, 5), col: ~~random(0, 5) },
-    // finishCell: { row: ~~random(15, 20), col: ~~random(15, 20) },
-  });
-  // maze.makePath(readPathStr(PATH_STR.C));
-  // maze.makePathFromText("ab", 1);
-  maze.generateMaze_DFS({
-    sleepTime: 1,
-  });
-}
 
-
-class MazeWidget {
-  constructor() {
-    this.startMaze();
- 
-  }
-  startMaze = () => {
-    window.setup = () => {
-      createCanvas(200, 200);
-      resetMaze();
-    };
-
-    window.draw = () => {
-      background(50);
-      maze.draw();
-    };
-
-    window.keyPressed = () => {
-      if (keyCode == 13) {
-        resetMaze();
-      }
-    };
-  }
-
-}
-
-// export default () => {
-//   new MazeWidget()
-// }
-
-new MazeWidget()
-
-
+export default Maze
